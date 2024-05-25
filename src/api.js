@@ -5,7 +5,7 @@ const uploadAudio = async (blob) => {
   formData.append("file", blob, "audio.wav");
 
   try {
-    const response = await axios.post("http://localhost:3001/api", formData, {
+    const response = await axios.post("/api/gemini/v1/upload", formData, {
       headers: {
         "Content-Type": "multipart/form-data",
       },

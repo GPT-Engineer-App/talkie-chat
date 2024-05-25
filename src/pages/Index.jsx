@@ -10,11 +10,21 @@ const Index = () => {
   const toast = useToast();
 
   useEffect(() => {
-    if (isRecording) {
-      startRecording();
-    } else if (mediaRecorderRef.current) {
-      stopRecording();
-    }
+    const observer = new MutationObserver((mutations) => {
+      mutations.forEach((mutation) => {
+        if (mutation.type === "childList") {
+          if (isRecording) {
+            startRecording();
+          } else if (mediaRecorderRef.current) {
+            stopRecording();
+          }
+        }
+      });
+    });
+
+    observer.observe(document.body, { childList: true, subtree: true });
+
+    return () => observer.disconnect();
   }, [isRecording]);
 
   const startRecording = async () => {
